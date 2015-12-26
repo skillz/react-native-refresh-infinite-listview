@@ -156,11 +156,11 @@ var RefreshInfiniteListView = React.createClass({
             isLoadedAllData: false,
         }
     },
-    renderRow(text) {
+    renderRow(text, sId, rId) {
         if (this.dataSource) {
             return this.props.renderEmptyRow(text);
         } else {
-            return this.props.renderRow(text);
+            return this.props.renderRow(text, sId, rId);
         }
     },
     renderHeader() {
