@@ -246,9 +246,11 @@ var RefreshInfiniteListView = React.createClass({
                 this.setState({status:STATUS_WILL_REFRESH});
             } else if (status===STATUS_WILL_REFRESH && y>=-this.props.pullDistance) {
                 this.setState({status:STATUS_REFRESH_IDLE}, function() {
-                  setTimeout(function() {
-                    this.setState({status:STATUS_NONE});
-                  }.bind(this), this.props.maxShowTime);
+                  if (this.props.maxShowTime) {
+                    setTimeout(function() {
+                      this.setState({status:STATUS_NONE});
+                    }.bind(this), this.props.maxShowTime);
+                  }
                 }.bind(this));
             }
             if (status!==STATUS_NONE) {return;}
@@ -264,9 +266,11 @@ var RefreshInfiniteListView = React.createClass({
                 this.setState({status:STATUS_WILL_INFINITE});
             } else if (status===STATUS_WILL_INFINITE && y<=this.props.pullDistance) {
                 this.setState({status:STATUS_INFINITE_IDLE}, function() {
-                  setTimeout(function() {
-                    this.setState({status:STATUS_NONE});
-                  }.bind(this), this.props.maxShowTime);
+                  if (this.props.maxShowTime) {
+                    setTimeout(function() {
+                      this.setState({status:STATUS_NONE});
+                    }.bind(this), this.props.maxShowTime);
+                  }
                 }.bind(this));
             }
         }
