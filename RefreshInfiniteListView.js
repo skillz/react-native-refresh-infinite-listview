@@ -240,17 +240,17 @@ var RefreshInfiniteListView = React.createClass({
     handleScroll(event) {
         var nativeEvent = event.nativeEvent;
         var status = this.state.status;
-        if (status===STATUS_REFRESH_IDLE || status===STATUS_WILL_REFRESH) {
+        if (status===STATUS_NONE || status===STATUS_REFRESH_IDLE || status===STATUS_WILL_REFRESH) {
             var y = nativeEvent.contentInset.top + nativeEvent.contentOffset.y
             if (status!==STATUS_WILL_REFRESH && y<-this.props.pullDistance) {
                 this.setState({status:STATUS_WILL_REFRESH});
             } else if (status===STATUS_WILL_REFRESH && y>=-this.props.pullDistance) {
                 this.setState({status:STATUS_REFRESH_IDLE});
             }
-            return;
+            if (status!==STATUS_NONE) {return;}
         }
 
-        if (status===STATUS_INFINITE_IDLE || status===STATUS_WILL_INFINITE) {
+        if (status===STATUS_NONE || status===STATUS_INFINITE_IDLE || status===STATUS_WILL_INFINITE) {
             var y = nativeEvent.contentInset.top + nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height
             -nativeEvent.contentSize.height-this.initialInfiniteOffset;
             if (this.footerIsRender) {
