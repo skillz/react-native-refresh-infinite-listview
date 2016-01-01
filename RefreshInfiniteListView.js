@@ -238,6 +238,10 @@ var RefreshInfiniteListView = React.createClass({
         }
     },
     handleScroll(event) {
+        if (!!this.props.loadedAllData()) {
+            this.setState({status:STATUS_INFINITE_LOADED_ALL});
+            return;
+        }
         var nativeEvent = event.nativeEvent;
         var status = this.state.status;
         if (status===STATUS_NONE || status===STATUS_REFRESH_IDLE || status===STATUS_WILL_REFRESH) {
