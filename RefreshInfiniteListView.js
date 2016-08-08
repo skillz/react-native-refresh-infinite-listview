@@ -279,6 +279,32 @@ var RefreshInfiniteListView = React.createClass({
             }
         }
     },
+    scrollTo(x,y) {
+      if (this._listView) {
+        var scrollResponder = this._listView.getScrollResponder();
+        if (scrollResponder) {
+          scrollResponder.scrollTo(x, y);
+        }
+      }
+    },
+    getContentSize() {
+      return this.contentSize;
+    },
+    getFrameSize() {
+      return this.listViewSize;
+    },
+    _listViewSizeChanged(e) {
+      this.listViewSize = {
+        width: e.nativeEvent.layout.width,
+        height: e.nativeEvent.layout.height,
+      };
+    },
+    _contentSizeChanged(width, height) {
+      this.contentSize = {
+        width: width,
+        height: height,
+      };
+    },
     render() {
         this.dataSource = null;
         if (!this.props.dataSource.getRowCount()) {
@@ -289,6 +315,9 @@ var RefreshInfiniteListView = React.createClass({
         return (
             <ListView
                 {...this.props}
+                ref={listView => {this._listView = listView;}}
+                onContentSizeChange={(width, height) => this._contentSizeChanged(width, height)}
+                onLayout={(e) => this._listViewSizeChanged(e)}
                 dataSource={this.dataSource?this.dataSource:this.props.dataSource}
                 renderRow={this.renderRow}
                 renderHeader={this.renderHeader}
