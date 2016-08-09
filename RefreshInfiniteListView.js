@@ -12,9 +12,10 @@ import {
   Dimensions,
   ActivityIndicatorIOS,
   PropTypes,
-} from 'react';
+} from 'react-native';
 
-/*list status change graph
+/*
+ * list status change graph
  *
  * STATUS_NONE->[STATUS_REFRESH_IDLE, STATUS_INFINITE_IDLE, STATUS_INFINITE_LOADED_ALL]
  * STATUS_REFRESH_IDLE->[STATUS_NONE, STATUS_WILL_REFRESH]
