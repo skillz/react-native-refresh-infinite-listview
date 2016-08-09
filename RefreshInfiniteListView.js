@@ -3,7 +3,9 @@
  * @flow
  */
 
-import {
+import React from 'react-native';
+
+let {
   Image,
   View,
   Text,
@@ -12,7 +14,7 @@ import {
   Dimensions,
   ActivityIndicatorIOS,
   PropTypes,
-} from 'react-native';
+} = React;
 
 /*
  * list status change graph
