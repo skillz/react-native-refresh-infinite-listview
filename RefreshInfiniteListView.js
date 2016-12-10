@@ -3,18 +3,17 @@
  * @flow
  */
 
-import React from 'react-native';
+import React from 'react';
 
-let {
+import {
   Image,
   View,
   Text,
   StyleSheet,
   ListView,
   Dimensions,
-  ActivityIndicatorIOS,
-  PropTypes,
-} = React;
+  ActivityIndicator,
+} from 'react-native';
 
 /*
  * list status change graph
@@ -43,16 +42,16 @@ let DEFAULT_HF_HEIGHT = 50;
 
 let RefreshInfiniteListView = React.createClass({
   propTypes: {
-    footerHeight : PropTypes.number,
-    pullDistance : PropTypes.number,
-    renderEmptyRow : PropTypes.func,
-    renderHeaderRefreshIdle : PropTypes.func,
-    renderHeaderWillRefresh : PropTypes.func,
-    renderHeaderRefreshing : PropTypes.func,
-    renderFooterInifiteIdle : PropTypes.func,
-    renderFooterWillInifite : PropTypes.func,
-    renderFooterInifiting : PropTypes.func,
-    renderFooterInifiteLoadedAll : PropTypes.func,
+    footerHeight : React.PropTypes.number,
+    pullDistance : React.PropTypes.number,
+    renderEmptyRow : React.PropTypes.func,
+    renderHeaderRefreshIdle : React.PropTypes.func,
+    renderHeaderWillRefresh : React.PropTypes.func,
+    renderHeaderRefreshing : React.PropTypes.func,
+    renderFooterInifiteIdle : React.PropTypes.func,
+    renderFooterWillInifite : React.PropTypes.func,
+    renderFooterInifiting : React.PropTypes.func,
+    renderFooterInifiteLoadedAll : React.PropTypes.func,
   },
   getDefaultProps(): Object {
     return {
@@ -97,7 +96,7 @@ let RefreshInfiniteListView = React.createClass({
             <Text style={styles.text}>
               {'refreshing...'}
             </Text>
-            <ActivityIndicatorIOS size='small'
+            <ActivityIndicator size='small'
                                   animating={true}/>
           </View>
         );
@@ -129,7 +128,7 @@ let RefreshInfiniteListView = React.createClass({
       renderFooterInifiting: (): React.Element => {
         return (
           <View style={{height:DEFAULT_HF_HEIGHT, justifyContent:'center', alignItems:'center'}}>
-            <ActivityIndicatorIOS size='small'
+            <ActivityIndicator size='small'
                                   animating={true}/>
             <Text style={styles.text}>
               {'loading...'}
