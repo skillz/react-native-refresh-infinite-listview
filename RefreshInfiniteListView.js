@@ -15,6 +15,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
+import PropTypes from 'prop-types';
+
 /*
  * list status change graph
  *
@@ -28,7 +30,7 @@ import {
  * STATUS_INFINITE_LOADED_ALL->[STATUS_NONE]
  *
  */
-let STATUS_NONE = 0,
+const STATUS_NONE = 0,
   STATUS_REFRESH_IDLE = 1,
   STATUS_WILL_REFRESH = 2,
   STATUS_REFRESHING = 3,
@@ -37,139 +39,143 @@ let STATUS_NONE = 0,
   STATUS_INFINITING = 6,
   STATUS_INFINITE_LOADED_ALL = 7;
 
-let DEFAULT_PULL_DISTANCE = 60;
-let DEFAULT_HF_HEIGHT = 50;
+const DEFAULT_PULL_DISTANCE = 60;
+const DEFAULT_HF_HEIGHT = 50;
 
-let RefreshInfiniteListView = React.createClass({
-  propTypes: {
-    footerHeight : React.PropTypes.number,
-    pullDistance : React.PropTypes.number,
-    renderEmptyRow : React.PropTypes.func,
-    renderHeaderRefreshIdle : React.PropTypes.func,
-    renderHeaderWillRefresh : React.PropTypes.func,
-    renderHeaderRefreshing : React.PropTypes.func,
-    renderFooterInifiteIdle : React.PropTypes.func,
-    renderFooterWillInifite : React.PropTypes.func,
-    renderFooterInifiting : React.PropTypes.func,
-    renderFooterInifiteLoadedAll : React.PropTypes.func,
-  },
-  getDefaultProps(): Object {
-    return {
-      footerHeight: DEFAULT_HF_HEIGHT,
-      pullDistance: DEFAULT_PULL_DISTANCE,
-      renderEmptyRow: (): React.Element => {
-        return (
-          <View style={{height:Dimensions.get('window').height * 2/3, justifyContent:'center',alignItems:'center'}}>
-            <Text style={{fontSize:40, fontWeight:'800', color:'red'}}>
-              {'have no data'}
-            </Text>
-          </View>
-        );
-      },
-      renderHeaderRefreshIdle: (): React.Element => {
-        return (
-          <View style={{flex:1, height:DEFAULT_HF_HEIGHT, justifyContent:'center', alignItems:'center'}}>
-            <Text style={styles.text}>
-              {'pull down refresh...'}
-            </Text>
-            <Image source={require('./pull_arrow.png')}
-                   resizeMode={Image.resizeMode.stretch}
-                   style={styles.image}/>
-          </View>
-        );
-      },
-      renderHeaderWillRefresh: (): React.Element => {
-        return (
-          <View style={{height:DEFAULT_HF_HEIGHT, justifyContent:'center', alignItems:'center'}}>
-            <Text style={styles.text}>
-              {'release to refresh...'}
-            </Text>
-            <Image source={require('./pull_arrow.png')}
-                   resizeMode={Image.resizeMode.stretch}
-                   style={[styles.image, styles.imageRotate]}/>
-          </View>
-        );
-      },
-      renderHeaderRefreshing: (): React.Element => {
-        return (
-          <View style={{height:DEFAULT_HF_HEIGHT, justifyContent:'center', alignItems:'center'}}>
-            <Text style={styles.text}>
-              {'refreshing...'}
-            </Text>
-            <ActivityIndicator size='small'
-                                  animating={true}/>
-          </View>
-        );
-      },
-      renderFooterInifiteIdle: (): React.Element => {
-        return (
-          <View style={{height:DEFAULT_HF_HEIGHT, justifyContent:'center', alignItems:'center'}}>
-            <Image source={require('./pull_arrow.png')}
-                   resizeMode={Image.resizeMode.stretch}
-                   style={[styles.image, styles.imageRotate]}/>
-            <Text style={styles.text}>
-              {'pull up to load more...'}
-            </Text>
-          </View>
-        );
-      },
-      renderFooterWillInifite: (): React.Element => {
-        return (
-          <View style={{height:DEFAULT_HF_HEIGHT, justifyContent:'center', alignItems:'center'}}>
-            <Image source={require('./pull_arrow.png')}
-                   resizeMode={Image.resizeMode.stretch}
-                   style={styles.image}/>
-            <Text style={styles.text}>
-              {'release to load more...'}
-            </Text>
-          </View>
-        );
-      },
-      renderFooterInifiting: (): React.Element => {
-        return (
-          <View style={{height:DEFAULT_HF_HEIGHT, justifyContent:'center', alignItems:'center'}}>
-            <ActivityIndicator size='small'
-                                  animating={true}/>
-            <Text style={styles.text}>
-              {'loading...'}
-            </Text>
-          </View>
-        );
-      },
-      renderFooterInifiteLoadedAll: (): React.Element => {
-        return (
-          <View style={{height:DEFAULT_HF_HEIGHT, justifyContent:'center', alignItems:'center'}}>
-            <Text style={styles.text}>
-              {'have loaded all data'}
-            </Text>
-          </View>
-        );
-      },
-      loadedAllData: (): boolean => {
-        return false;
-      },
-      onRefresh: () => {
-        console.log("onRefresh");
-      },
-      onInfinite: () => {
-        console.log("onInfinite");
-      },
-    };
-  },
-  getInitialState(): Object {
-    return {
+export default class RefreshInfiniteListView extends React.Component{
+  static propTypes = {
+    footerHeight : PropTypes.number,
+    pullDistance : PropTypes.number,
+    renderEmptyRow : PropTypes.func,
+    renderHeaderRefreshIdle : PropTypes.func,
+    renderHeaderWillRefresh : PropTypes.func,
+    renderHeaderRefreshing : PropTypes.func,
+    renderFooterInifiteIdle : PropTypes.func,
+    renderFooterWillInifite : PropTypes.func,
+    renderFooterInifiting : PropTypes.func,
+    renderFooterInifiteLoadedAll : PropTypes.func,
+  };
+
+  static defaultProps = {
+    footerHeight: DEFAULT_HF_HEIGHT,
+    pullDistance: DEFAULT_PULL_DISTANCE,
+    renderEmptyRow: (): React.Element => {
+      return (
+        <View style={{height:Dimensions.get('window').height * 2/3, justifyContent:'center',alignItems:'center'}}>
+          <Text style={{fontSize:40, fontWeight:'800', color:'red'}}>
+            {'have no data'}
+          </Text>
+        </View>
+      );
+    },
+    renderHeaderRefreshIdle: (): React.Element => {
+      return (
+        <View style={{flex:1, height:DEFAULT_HF_HEIGHT, justifyContent:'center', alignItems:'center'}}>
+          <Text style={styles.text}>
+            {'pull down refresh...'}
+          </Text>
+          <Image source={require('./pull_arrow.png')}
+                 resizeMode={Image.resizeMode.stretch}
+                 style={styles.image}/>
+        </View>
+      );
+    },
+    renderHeaderWillRefresh: (): React.Element => {
+      return (
+        <View style={{height:DEFAULT_HF_HEIGHT, justifyContent:'center', alignItems:'center'}}>
+          <Text style={styles.text}>
+            {'release to refresh...'}
+          </Text>
+          <Image source={require('./pull_arrow.png')}
+                 resizeMode={Image.resizeMode.stretch}
+                 style={[styles.image, styles.imageRotate]}/>
+        </View>
+      );
+    },
+    renderHeaderRefreshing: (): React.Element => {
+      return (
+        <View style={{height:DEFAULT_HF_HEIGHT, justifyContent:'center', alignItems:'center'}}>
+          <Text style={styles.text}>
+            {'refreshing...'}
+          </Text>
+          <ActivityIndicator size='small'
+                                animating={true}/>
+        </View>
+      );
+    },
+    renderFooterInifiteIdle: (): React.Element => {
+      return (
+        <View style={{height:DEFAULT_HF_HEIGHT, justifyContent:'center', alignItems:'center'}}>
+          <Image source={require('./pull_arrow.png')}
+                 resizeMode={Image.resizeMode.stretch}
+                 style={[styles.image, styles.imageRotate]}/>
+          <Text style={styles.text}>
+            {'pull up to load more...'}
+          </Text>
+        </View>
+      );
+    },
+    renderFooterWillInifite: (): React.Element => {
+      return (
+        <View style={{height:DEFAULT_HF_HEIGHT, justifyContent:'center', alignItems:'center'}}>
+          <Image source={require('./pull_arrow.png')}
+                 resizeMode={Image.resizeMode.stretch}
+                 style={styles.image}/>
+          <Text style={styles.text}>
+            {'release to load more...'}
+          </Text>
+        </View>
+      );
+    },
+    renderFooterInifiting: (): React.Element => {
+      return (
+        <View style={{height:DEFAULT_HF_HEIGHT, justifyContent:'center', alignItems:'center'}}>
+          <ActivityIndicator size='small'
+                                animating={true}/>
+          <Text style={styles.text}>
+            {'loading...'}
+          </Text>
+        </View>
+      );
+    },
+    renderFooterInifiteLoadedAll: (): React.Element => {
+      return (
+        <View style={{height:DEFAULT_HF_HEIGHT, justifyContent:'center', alignItems:'center'}}>
+          <Text style={styles.text}>
+            {'have loaded all data'}
+          </Text>
+        </View>
+      );
+    },
+    loadedAllData: (): boolean => {
+      return false;
+    },
+    onRefresh: () => {
+      console.log("onRefresh");
+    },
+    onInfinite: () => {
+      console.log("onInfinite");
+    },
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
       status: STATUS_NONE,
       isLoadedAllData: false,
     };
-  },
+  }
+
   renderRow(text: string, sId: number, rId: number): React.Element {
     if (this.dataSource) {
       return this.props.renderEmptyRow(text);
     }
     return this.props.renderRow(text, sId, rId);
-  },
+  }
+
   renderHeader(): ?React.Element {
-    let status = this.state.status;
+    const status = this.state.status;
     if (status === STATUS_REFRESH_IDLE) {
       return this.props.renderHeaderRefreshIdle();
     } else if (status === STATUS_WILL_REFRESH) {
@@ -178,9 +184,10 @@ let RefreshInfiniteListView = React.createClass({
       return this.props.renderHeaderRefreshing();
     }
     return false;
-  },
+  }
+
   renderFooter(): ?React.Element {
-    let status = this.state.status;
+    const status = this.state.status;
     this.footerIsRender = true;
     if (status === STATUS_INFINITE_IDLE) {
       return this.props.renderFooterInifiteIdle();
@@ -193,9 +200,10 @@ let RefreshInfiniteListView = React.createClass({
     }
     this.footerIsRender = false;
     return false;
-  },
-  handleResponderGrant(event) {
-    let nativeEvent = event.nativeEvent;
+  }
+
+  handleResponderGrant(event: *) {
+    const nativeEvent = event.nativeEvent;
     if (!nativeEvent.contentInset || this.state.status!==STATUS_NONE) {
       return;
     }
@@ -214,15 +222,18 @@ let RefreshInfiniteListView = React.createClass({
         this.setState({status:STATUS_INFINITE_LOADED_ALL});
       }
     }
-  },
+  }
+
   hideHeader() {
     this.setState({status:STATUS_NONE});
-  },
+  }
+
   hideFooter() {
     this.setState({status:STATUS_NONE});
-  },
-  handleResponderRelease(event) {
-    let status = this.state.status;
+  }
+
+  handleResponderRelease(event: *) {
+    const status = this.state.status;
     if (status === STATUS_REFRESH_IDLE) {
       this.setState({status:STATUS_NONE});
     } else if (status === STATUS_WILL_REFRESH) {
@@ -236,13 +247,14 @@ let RefreshInfiniteListView = React.createClass({
     } else if (status === STATUS_INFINITE_LOADED_ALL) {
       this.setState({status:STATUS_NONE});
     }
-  },
-  handleScroll(event) {
-    let nativeEvent = event.nativeEvent;
-    let status = this.state.status;
+  }
+
+  handleScroll(event: *) {
+    const nativeEvent = event.nativeEvent;
+    const status = this.state.status;
     if (status === STATUS_NONE || status === STATUS_INFINITE_LOADED_ALL ||
         status === STATUS_REFRESH_IDLE || status === STATUS_WILL_REFRESH) {
-      let y = nativeEvent.contentInset.top + nativeEvent.contentOffset.y
+      const y = nativeEvent.contentInset.top + nativeEvent.contentOffset.y
       if (status !== STATUS_WILL_REFRESH && y < -this.props.pullDistance) {
         this.setState({status:STATUS_WILL_REFRESH});
       } else if (status === STATUS_WILL_REFRESH && y >= -this.props.pullDistance) {
@@ -255,7 +267,7 @@ let RefreshInfiniteListView = React.createClass({
       if (status !== STATUS_NONE) {return;}
     }
     if (status === STATUS_NONE || status === STATUS_INFINITE_IDLE || status === STATUS_WILL_INFINITE) {
-      if (!!this.props.loadedAllData()) {
+      if (this.props.loadedAllData()) {
         this.setState({status:STATUS_INFINITE_LOADED_ALL});
         return;
       }
@@ -274,58 +286,64 @@ let RefreshInfiniteListView = React.createClass({
         }.bind(this));
       }
     }
-  },
-  scrollTo(x,y) {
+  }
+
+  scrollTo(x: Number, y: Number) {
     if (this._listView) {
-      let scrollResponder = this._listView.getScrollResponder();
+      const scrollResponder = this._listView.getScrollResponder();
       if (scrollResponder) {
         scrollResponder.scrollTo(x, y);
       }
     }
-  },
+  }
+
   getContentSize(): ?Object {
     return this.contentSize;
-  },
+  }
+
   getFrameSize(): ?Object {
     return this.listViewSize;
-  },
-  _listViewSizeChanged(e) {
+  }
+
+  _listViewSizeChanged(e: *) {
     this.listViewSize = {
       width: e.nativeEvent.layout.width,
       height: e.nativeEvent.layout.height,
     };
-  },
-  _contentSizeChanged(width, height) {
+  }
+
+  _contentSizeChanged(width: Number, height: Number) {
     this.contentSize = {
       width: width,
       height: height,
     };
-  },
+  }
+
   render(): React.Element {
     this.dataSource = null;
     if (!this.props.dataSource.getRowCount()) {
-      let DataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-      this.dataSource = DataSource.cloneWithRows([""]);
+      const dataSource = new ListView.DataSource({rowHasChanged: (r1: *, r2: *): boolean => { return r1 !== r2; }});
+      this.dataSource = dataSource.cloneWithRows([""]);
 
     }
     return (
       <ListView
         {...this.props}
-        ref={listView => {this._listView = listView;}}
-        onContentSizeChange={(width, height) => this._contentSizeChanged(width, height)}
-        onLayout={(e) => this._listViewSizeChanged(e)}
+        ref={(listView: *) => {this._listView = listView;}}
+        onContentSizeChange={(width: Number, height: Number) => { this._contentSizeChanged(width, height); }}
+        onLayout={(e: *) => { this._listViewSizeChanged(e); } }
         dataSource={this.dataSource?this.dataSource:this.props.dataSource}
-        renderRow={this.renderRow}
-        renderHeader={this.renderHeader}
-        renderFooter={this.renderFooter}
-        onResponderGrant={this.handleResponderGrant}
-        onResponderRelease={this.handleResponderRelease}
-        onScroll={this.handleScroll}/>
+        renderRow={this.renderRow.bind(this)}
+        renderHeader={this.renderHeader.bind(this)}
+        renderFooter={this.renderFooter.bind(this)}
+        onResponderGrant={this.handleResponderGrant.bind(this)}
+        onResponderRelease={this.handleResponderRelease.bind(this)}
+        onScroll={this.handleScroll.bind(this)}/>
     );
   }
-});
+}
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   text: {
     fontSize:16,
   },
@@ -337,5 +355,3 @@ let styles = StyleSheet.create({
     transform:[{rotateX: '180deg'},],
   }
 });
-
-export default RefreshInfiniteListView;
