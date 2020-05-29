@@ -4,13 +4,13 @@
  */
 
 import React from 'react';
+import ListView from 'deprecated-react-native-listview';
 
 import {
   Image,
   View,
   Text,
   StyleSheet,
-  ListView,
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
